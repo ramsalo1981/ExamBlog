@@ -37,7 +37,8 @@ namespace KnowledgeAppApi
 
             services.AddDbContext<KnowledgeDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr")));
 
-            services.AddCors();
+            //services.AddCors();
+            services.AddCors(c => c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KnowledgeAppApi", Version = "v1" });
@@ -47,9 +48,10 @@ namespace KnowledgeAppApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.WithOrigins("http://localhost:3000")
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+            //app.UseCors(options => options.WithOrigins("http://localhost:3000")
+            //   .AllowAnyMethod()
+            //   .AllowAnyHeader());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             if (env.IsDevelopment())
             {
